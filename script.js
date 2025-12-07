@@ -20,68 +20,68 @@ resize();
 
 function rand(a, b) { return a + Math.random() * (b - a); }
 
-class Particle {
-  constructor(i) {
-    this.reset(true);
-    this.i = i;
-  }
-  reset(randomPos = false) {
-    this.x = randomPos ? rand(0, w) : (w / 2 + rand(-50, 50));
-    this.y = randomPos ? rand(0, h) : (h / 2 + rand(-50, 50));
-    this.baseSpeed = rand(0.2, 0.8);
-    this.amp = rand(6, 30);
-    this.theta = rand(0, Math.PI * 2);
-    this.size = rand(0.8, 2.2) * dpr;
-    this.hue = rand(250, 320); // purples
+// class Particle {
+//   constructor(i) {
+//     this.reset(true);
+//     this.i = i;
+//   }
+//   reset(randomPos = false) {
+//     this.x = randomPos ? rand(0, w) : (w / 2 + rand(-50, 50));
+//     this.y = randomPos ? rand(0, h) : (h / 2 + rand(-50, 50));
+//     this.baseSpeed = rand(0.2, 0.8);
+//     this.amp = rand(6, 30);
+//     this.theta = rand(0, Math.PI * 2);
+//     this.size = rand(0.8, 2.2) * dpr;
+//     this.hue = rand(250, 320); // purples
     
-  }
-  step(dt) {
-    // Flow field using sin/cos of position and time for organic motion
-    const nx = (this.x / w) * 2 - 1;
-    const ny = (this.y / h) * 2 - 1;
-    const angle =
-      Math.sin(nx * 3.1 + t * 0.0007) * 1.7 +
-      Math.cos(ny * 2.3 - t * 0.0009) * 1.4 +
-      Math.sin((nx + ny) * 1.5 + t * 0.0005) * 0.7;
+//   }
+//   step(dt) {
+//     // Flow field using sin/cos of position and time for organic motion
+//     const nx = (this.x / w) * 2 - 1;
+//     const ny = (this.y / h) * 2 - 1;
+//     const angle =
+//       Math.sin(nx * 3.1 + t * 0.0007) * 1.7 +
+//       Math.cos(ny * 2.3 - t * 0.0009) * 1.4 +
+//       Math.sin((nx + ny) * 1.5 + t * 0.0005) * 0.7;
 
-    const spd = this.baseSpeed + 0.6;
-    this.vx = Math.cos(angle) * spd + Math.sin(this.theta) * (this.amp * 0.01);
-    this.vy = Math.sin(angle) * spd + Math.cos(this.theta) * (this.amp * 0.01);
+//     const spd = this.baseSpeed + 0.6;
+//     this.vx = Math.cos(angle) * spd + Math.sin(this.theta) * (this.amp * 0.01);
+//     this.vy = Math.sin(angle) * spd + Math.cos(this.theta) * (this.amp * 0.01);
 
-    // Mouse influence
-    const dx = (mouse.x * dpr) - this.x;
-    const dy = (mouse.y * dpr) - this.y;
-    const dist2 = dx * dx + dy * dy;
-    const R = 160 * dpr;
-    if (dist2 < R * R) {
-      const f = (1 - dist2 / (R * R)) * 0.9;
-      this.vx += (dx / Math.sqrt(dist2 + 1)) * f * (mouse.down ? 2.0 : 0.6);
-      this.vy += (dy / Math.sqrt(dist2 + 1)) * f * (mouse.down ? 2.0 : 0.6);
-      this.hue = 200 + (dist2 % 120); // subtle hue shift near cursor
-    }
+//     // Mouse influence
+//     const dx = (mouse.x * dpr) - this.x;
+//     const dy = (mouse.y * dpr) - this.y;
+//     const dist2 = dx * dx + dy * dy;
+//     const R = 160 * dpr;
+//     if (dist2 < R * R) {
+//       const f = (1 - dist2 / (R * R)) * 0.9;
+//       this.vx += (dx / Math.sqrt(dist2 + 1)) * f * (mouse.down ? 2.0 : 0.6);
+//       this.vy += (dy / Math.sqrt(dist2 + 1)) * f * (mouse.down ? 2.0 : 0.6);
+//       this.hue = 200 + (dist2 % 120); // subtle hue shift near cursor
+//     }
 
-    this.x += this.vx;
-    this.y += this.vy;
-    this.theta += 0.02;
+//     this.x += this.vx;
+//     this.y += this.vy;
+//     this.theta += 0.02;
 
-    if (this.x < -20 || this.x > w + 20 || this.y < -20 || this.y > h + 20) {
-      this.reset(true);
-    }
-  }
-  draw() {
-    ctx.beginPath();
-    ctx.fillStyle = `hsla(${this.hue}, 90%, 65%, 0.06)`;
-    ctx.arc(this.x, this.y, this.size * 2.0, 0, Math.PI * 2);
-    ctx.fill();
+//     if (this.x < -20 || this.x > w + 20 || this.y < -20 || this.y > h + 20) {
+//       this.reset(true);
+//     }
+//   }
+//   draw() {
+//     ctx.beginPath();
+//     ctx.fillStyle = `hsla(${this.hue}, 90%, 65%, 0.06)`;
+//     ctx.arc(this.x, this.y, this.size * 2.0, 0, Math.PI * 2);
+//     ctx.fill();
 
-    ctx.beginPath();
-    ctx.fillStyle = `hsla(${this.hue + 40}, 90%, 55%, 0.08)`;
-    ctx.arc(this.x + 1, this.y + 1, this.size * 1.2, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
+//     ctx.beginPath();
+//     ctx.fillStyle = `hsla(${this.hue + 40}, 90%, 55%, 0.08)`;
+//     ctx.arc(this.x + 1, this.y + 1, this.size * 1.2, 0, Math.PI * 2);
+//     ctx.fill();
+//   }
+// }
 
-for (let i = 0; i < P_COUNT; i++) particles.push(new Particle(i));
+// for (let i = 0; i < P_COUNT; i++) particles.push(new Particle(i));
 
 function loop(ts) {
   t = ts;
