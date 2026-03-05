@@ -130,7 +130,7 @@ function addMagnet(el, strength = 0.25) {
     el.style.transform = 'translate(0,0)';
   });
 }
-document.querySelectorAll('.magnetic, .card').forEach(el => addMagnet(el, el.classList.contains('card') ? 0.15 : 0.35));
+document.querySelectorAll('.card').forEach(el => addMagnet(el,0.15));
 
 // Theme toggle
 const toggle = document.querySelector('.theme-toggle');
@@ -147,7 +147,7 @@ toggle.addEventListener('click', () => {
 document.getElementById('year').textContent = new Date().getFullYear();
 
 const lt = () => {
-  fetch(`https://leetcode-stats-api.herokuapp.com/anisul770`)
+  fetch(`https://leetcode-stats.tashif.codes/anisul770`)
   .then(data => data.json()).then(data =>{
     const div = document.getElementById("leetcode");
     div.innerText = `${data['totalSolved']}+`
